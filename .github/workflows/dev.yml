@@ -51,7 +51,8 @@ jobs:
       - name: Zip API Project
         run: |
           cd dev/TrainStationApi/1.0.0
-          zip -r TrainStationApi-1.0.0.zip TrainStationApi-1.0.0
+          ls
+          zip -r TrainStationApi-1.0.0.zip TrainStationApi-1.0.0/
 
       - name: Deploy API to Dev Environment
         shell: sh
