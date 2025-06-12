@@ -411,11 +411,11 @@ x-wso2-cors:
    - OPTIONS
 x-wso2-production-endpoints:
   urls:
-   - http://backend-dev-service:8080/train-operations/v1/
+   - http://backend-service:8080/train-operations/v1/
   type: http
 x-wso2-sandbox-endpoints:
   urls:
-   - http://backend-dev-service:8080/train-operations/v1/
+   - http://backend-service:8080/train-operations/v1/
   type: http
 x-wso2-basePath: /trainstationapi/1.0.0
 x-wso2-transports:
