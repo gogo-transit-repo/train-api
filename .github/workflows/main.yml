@@ -76,6 +76,9 @@ jobs:
         if: github.event_name == 'pull_request_target' && always()
         run: |
           cd base
-          gh pr comment ${{ github.event.number }} --body "$(cat ../result.txt)"
+          echo '```' > ../comment.txt
+          cat ../result.txt >> ../comment.txt
+          echo '```' >> ../comment.txt
+          gh pr comment ${{ github.event.number }} --body "$(cat ../comment.txt)"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
