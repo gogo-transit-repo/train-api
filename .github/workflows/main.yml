@@ -60,8 +60,7 @@ jobs:
           
       - name: Run Governance Validation
         run: |
-          tools/apictl/apictl import api -f "base/TrainStationApi/1.0.0/TrainStationApi-1.0.0" -e dev 
-          --dry-run --insecure > result.txt || true
+          tools/apictl/apictl import api -f "base/TrainStationApi/1.0.0/TrainStationApi-1.0.0" -e dev -k --dry-run > result.txt || true
 
       - name: Fail on Governance ERRORs only
         run: |
