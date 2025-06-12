@@ -7,4 +7,4 @@ environments:
         deploymentEnvironments:
             - displayOnDevportal: false
               deploymentEnvironment: Default
-              deploymentVhost : dev.gw.apim.com
+              deploymentVhost : gw.apim.com
