@@ -51,9 +51,15 @@ jobs:
       - name: Deploy API to Dev Environment
         shell: sh
         run: |
-          wget https://github.com/gogo-transit/train-api/releases/download/latest/TrainStationApi-1.0.0.zip
-          tools/apictl/apictl import api -f TrainStationApi-1.0.0.zip -e dev --update --preserve-provider=false --params dev/TrainStationApi/1.0.0/params.yaml --insecure
+          tools/apictl/apictl import api \
+            -f dev/TrainStationApi/1.0.0/TrainStationApi-1.0.0 \
+            -e dev \
+            --update \
+            --preserve-provider=false \
+            --params dev/TrainStationApi/1.0.0/params.yaml \
+            --insecure
         if: github.event_name == 'pull_request_target' && github.event.action == 'closed' && github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
+
 
       - name: Logout to Dev Environment
         shell: sh
