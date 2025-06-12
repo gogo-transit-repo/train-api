@@ -3,7 +3,7 @@ environments:
       configs:
         endpoints:
             production:
-                url: 'http://backend-dev-service:8080/train-operations/v1/'
+                url: 'http://backend-service:8080/train-operations/v1/'
         deploymentEnvironments:
             - displayOnDevportal: false
               deploymentEnvironment: Default
