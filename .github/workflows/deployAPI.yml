@@ -16,22 +16,26 @@ jobs:
           wget https://github.com/wso2/product-apim-tooling/releases/download/v4.5.0/apictl-4.5.0-linux-amd64.tar.gz
           tar -xzvf apictl-4.5.0-linux-amd64.tar.gz
           mv apictl tools/
+
       - name: Checkout API Code
         uses: actions/checkout@v3
         with:
           fetch-depth: "0"
           path: base
+
       - name: Set release username and email
         shell: sh
         run: |
           git config --global user.name ${{ secrets.BOT_USER }}
           git config --global user.email ${{ secrets.BOT_EMAIL }}
         env:
-          GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Create API Archieve
         run: |
             tools/apictl/apictl bundle -s base/TrainStationApi/1.0.0/TrainStationApi-1.0.0
         if: github.event_name == 'pull_request_target' && github.events.action == 'closed' || github.event_name == 'workflow_dispatch'
+
       - name: Upload Release artifact
         shell: sh
         run: |

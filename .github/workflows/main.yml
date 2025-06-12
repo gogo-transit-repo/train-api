@@ -12,7 +12,7 @@ jobs:
     name: API Validation Build
     runs-on: ubuntu-latest
     steps:
-      - name: install WSO2 tools
+      - name: Install API Controller
         run: |
           mkdir -p tools
           wget https://github.com/wso2/product-apim-tooling/releases/download/v4.5.0/apictl-4.5.0-linux-amd64.tar.gz
@@ -31,7 +31,7 @@ jobs:
           git config --global user.name ${{ secrets.BOT_USER }}
           git config --global user.email ${{ secrets.BOT_EMAIL }}
           
-      - name: checkout pull request and merge.
+      - name: Checkout Pull Request and Merge.
         shell: sh
         if: github.event_name == 'pull_request_target'
         run: |
@@ -61,9 +61,6 @@ jobs:
       - name: Run Governance Validation
         run: |
           tools/apictl/apictl import api -f "base/TrainStationApi/1.0.0/TrainStationApi-1.0.0" -e dev -k --dry-run > result.txt || true
-
-      - name: Fail on Governance ERRORs only
-        run: |
           if grep -qE '\|.*\|\s*ERROR\s*\|' result.txt; then
             echo "::error ::Governance errors found. PR cannot be merged."
             exit 1
