@@ -64,7 +64,6 @@ jobs:
       - name: Trigger Performance Tests
         if: success()
         run: |
-          gh workflow run "API Performance Test" -f ref=dev --repo gogo-transit-repo/train-api
+          gh workflow run "API Performance Test"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
