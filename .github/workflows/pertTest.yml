@@ -41,130 +41,96 @@ jobs:
           cat > jmeter/trainstation_test.jmx <<'EOF'
           <?xml version="1.0" encoding="UTF-8"?>
           <jmeterTestPlan version="1.2" properties="5.0" jmeter="5.5">
+          <hashTree>
+            <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="TrainStation API Test Plan" enabled="true">
+              <elementProp name="TestPlan.user_defined_variables" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="station_id" elementType="Argument">
+                    <stringProp name="Argument.name">station_id</stringProp>
+                    <stringProp name="Argument.value">ST123</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+            </TestPlan>
             <hashTree>
-              <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="TrainStation API Test Plan" enabled="true">
-                <elementProp name="TestPlan.user_defined_variables" elementType="Arguments">
-                  <collectionProp name="Arguments.arguments">
-                    <elementProp name="station_id" elementType="Argument">
-                      <stringProp name="Argument.name">station_id</stringProp>
-                      <stringProp name="Argument.value">ST123</stringProp>
-                      <stringProp name="Argument.metadata">=</stringProp>
+              <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group" enabled="true">
+                <stringProp name="ThreadGroup.num_threads">1</stringProp>
+                <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+                <elementProp name="ThreadGroup.main_controller" elementType="LoopController">
+                  <boolProp name="LoopController.continue_forever">false</boolProp>
+                  <stringProp name="LoopController.loops">1</stringProp>
+                </elementProp>
+              </ThreadGroup>
+              <hashTree>
+                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Set Headers" enabled="true">
+                  <collectionProp name="HeaderManager.headers">
+                    <elementProp name="Internal-Key" elementType="Header">
+                      <stringProp name="Header.name">Internal-Key</stringProp>
+                      <stringProp name="Header.value">${__P(api_key)}</stringProp>
+                    </elementProp>
+                    <elementProp name="accept" elementType="Header">
+                      <stringProp name="Header.name">accept</stringProp>
+                      <stringProp name="Header.value">application/json</stringProp>
                     </elementProp>
                   </collectionProp>
-                </elementProp>
-              </TestPlan>
-              <hashTree>
-                <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group" enabled="true">
-                  <stringProp name="ThreadGroup.num_threads">1</stringProp>
-                  <stringProp name="ThreadGroup.ramp_time">1</stringProp>
-                  <elementProp name="ThreadGroup.main_controller" elementType="LoopController">
-                    <boolProp name="LoopController.continue_forever">false</boolProp>
-                    <stringProp name="LoopController.loops">1</stringProp>
-                  </elementProp>
-                </ThreadGroup>
-                <hashTree>
-                  <!-- GET /stations -->
-                  <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /stations" enabled="true">
-                    <elementProp name="HTTPsampler.Arguments" elementType="Arguments"/>
-                    <stringProp name="HTTPSampler.domain">gw.apim.com</stringProp>
-                    <stringProp name="HTTPSampler.port">8243</stringProp>
-                    <stringProp name="HTTPSampler.protocol">https</stringProp>
-                    <stringProp name="HTTPSampler.path">/trainstationapi/1.0.0/stations</stringProp>
-                    <stringProp name="HTTPSampler.method">GET</stringProp>
-                    <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                    <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                    <elementProp name="HeaderManager.headers" elementType="HeaderManager">
-                      <collectionProp name="HeaderManager.headers">
-                        <elementProp name="Internal-Key" elementType="Header">
-                          <stringProp name="Header.name">Internal-Key</stringProp>
-                          <stringProp name="Header.value">${api_key}</stringProp>
-                        </elementProp>
-                        <elementProp name="accept" elementType="Header">
-                          <stringProp name="Header.name">accept</stringProp>
-                          <stringProp name="Header.value">application/json</stringProp>
-                        </elementProp>
-                      </collectionProp>
-                    </elementProp>
-                  </HTTPSamplerProxy>
-                  <hashTree/>
+                </HeaderManager>
+                <hashTree/>
           
-                  <!-- GET /stations/{station_id} -->
-                  <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /stations/{station_id}" enabled="true">
-                    <elementProp name="HTTPsampler.Arguments" elementType="Arguments"/>
-                    <stringProp name="HTTPSampler.domain">gw.apim.com</stringProp>
-                    <stringProp name="HTTPSampler.port">8243</stringProp>
-                    <stringProp name="HTTPSampler.protocol">https</stringProp>
-                    <stringProp name="HTTPSampler.path">/trainstationapi/1.0.0/stations/${station_id}</stringProp>
-                    <stringProp name="HTTPSampler.method">GET</stringProp>
-                    <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                    <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                    <elementProp name="HeaderManager.headers" elementType="HeaderManager">
-                      <collectionProp name="HeaderManager.headers">
-                        <elementProp name="Internal-Key" elementType="Header">
-                          <stringProp name="Header.name">Internal-Key</stringProp>
-                          <stringProp name="Header.value">${api_key}</stringProp>
-                        </elementProp>
-                        <elementProp name="accept" elementType="Header">
-                          <stringProp name="Header.name">accept</stringProp>
-                          <stringProp name="Header.value">application/json</stringProp>
-                        </elementProp>
-                      </collectionProp>
-                    </elementProp>
-                  </HTTPSamplerProxy>
-                  <hashTree/>
+                <!-- GET /stations -->
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /stations" enabled="true">
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments"/>
+                  <stringProp name="HTTPSampler.domain">gw.apim.com</stringProp>
+                  <stringProp name="HTTPSampler.port">8243</stringProp>
+                  <stringProp name="HTTPSampler.protocol">https</stringProp>
+                  <stringProp name="HTTPSampler.path">/trainstationapi/1.0.0/stations</stringProp>
+                  <stringProp name="HTTPSampler.method">GET</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                </HTTPSamplerProxy>
+                <hashTree/>
           
-                  <!-- GET /stations/{station_id}/platforms -->
-                  <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /stations/{station_id}/platforms" enabled="true">
-                    <elementProp name="HTTPsampler.Arguments" elementType="Arguments"/>
-                    <stringProp name="HTTPSampler.domain">gw.apim.com</stringProp>
-                    <stringProp name="HTTPSampler.port">8243</stringProp>
-                    <stringProp name="HTTPSampler.protocol">https</stringProp>
-                    <stringProp name="HTTPSampler.path">/trainstationapi/1.0.0/stations/${station_id}/platforms</stringProp>
-                    <stringProp name="HTTPSampler.method">GET</stringProp>
-                    <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                    <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                    <elementProp name="HeaderManager.headers" elementType="HeaderManager">
-                      <collectionProp name="HeaderManager.headers">
-                        <elementProp name="Internal-Key" elementType="Header">
-                          <stringProp name="Header.name">Internal-Key</stringProp>
-                          <stringProp name="Header.value">${api_key}</stringProp>
-                        </elementProp>
-                        <elementProp name="accept" elementType="Header">
-                          <stringProp name="Header.name">accept</stringProp>
-                          <stringProp name="Header.value">application/json</stringProp>
-                        </elementProp>
-                      </collectionProp>
-                    </elementProp>
-                  </HTTPSamplerProxy>
-                  <hashTree/>
+                <!-- GET /stations/{station_id} -->
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /stations/{station_id}" enabled="true">
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments"/>
+                  <stringProp name="HTTPSampler.domain">gw.apim.com</stringProp>
+                  <stringProp name="HTTPSampler.port">8243</stringProp>
+                  <stringProp name="HTTPSampler.protocol">https</stringProp>
+                  <stringProp name="HTTPSampler.path">/trainstationapi/1.0.0/stations/${station_id}</stringProp>
+                  <stringProp name="HTTPSampler.method">GET</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                </HTTPSamplerProxy>
+                <hashTree/>
           
-                  <!-- GET /stations/{station_id}/trains -->
-                  <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /stations/{station_id}/trains" enabled="true">
-                    <elementProp name="HTTPsampler.Arguments" elementType="Arguments"/>
-                    <stringProp name="HTTPSampler.domain">gw.apim.com</stringProp>
-                    <stringProp name="HTTPSampler.port">8243</stringProp>
-                    <stringProp name="HTTPSampler.protocol">https</stringProp>
-                    <stringProp name="HTTPSampler.path">/trainstationapi/1.0.0/stations/${station_id}/trains</stringProp>
-                    <stringProp name="HTTPSampler.method">GET</stringProp>
-                    <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                    <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                    <elementProp name="HeaderManager.headers" elementType="HeaderManager">
-                      <collectionProp name="HeaderManager.headers">
-                        <elementProp name="Internal-Key" elementType="Header">
-                          <stringProp name="Header.name">Internal-Key</stringProp>
-                          <stringProp name="Header.value">${api_key}</stringProp>
-                        </elementProp>
-                        <elementProp name="accept" elementType="Header">
-                          <stringProp name="Header.name">accept</stringProp>
-                          <stringProp name="Header.value">application/json</stringProp>
-                        </elementProp>
-                      </collectionProp>
-                    </elementProp>
-                  </HTTPSamplerProxy>
-                  <hashTree/>
-                </hashTree>
+                <!-- GET /stations/{station_id}/platforms -->
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /stations/{station_id}/platforms" enabled="true">
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments"/>
+                  <stringProp name="HTTPSampler.domain">gw.apim.com</stringProp>
+                  <stringProp name="HTTPSampler.port">8243</stringProp>
+                  <stringProp name="HTTPSampler.protocol">https</stringProp>
+                  <stringProp name="HTTPSampler.path">/trainstationapi/1.0.0/stations/${station_id}/platforms</stringProp>
+                  <stringProp name="HTTPSampler.method">GET</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                </HTTPSamplerProxy>
+                <hashTree/>
+          
+                <!-- GET /stations/{station_id}/trains -->
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /stations/{station_id}/trains" enabled="true">
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments"/>
+                  <stringProp name="HTTPSampler.domain">gw.apim.com</stringProp>
+                  <stringProp name="HTTPSampler.port">8243</stringProp>
+                  <stringProp name="HTTPSampler.protocol">https</stringProp>
+                  <stringProp name="HTTPSampler.path">/trainstationapi/1.0.0/stations/${station_id}/trains</stringProp>
+                  <stringProp name="HTTPSampler.method">GET</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                </HTTPSamplerProxy>
+                <hashTree/>
               </hashTree>
             </hashTree>
+          </hashTree>
           </jmeterTestPlan>
           EOF
 
