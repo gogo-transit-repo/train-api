@@ -69,3 +69,11 @@ jobs:
         run: |
           tools/apictl/apictl logout dev --insecure
         if: github.event_name == 'pull_request_target' && github.event.action == 'closed' && github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
+
+      - name: Trigger Performance Tests
+        if: success() && github.event_name == 'pull_request_target' && github.event.action == 'closed' && github.event.pull_request.merged == true
+        run: |
+          gh workflow run "API Performance Test" -f ref=dev
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
