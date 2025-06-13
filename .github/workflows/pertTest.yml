@@ -73,6 +73,12 @@ jobs:
           </jmeterTestPlan>
           EOF
 
+      - name: Patch XStream Permissions
+        run: |
+          sudo mkdir -p /usr/share/jmeter/bin
+          echo "xstream.whitelist.append=true" | sudo tee /usr/share/jmeter/bin/xstream.properties
+          echo "xstream.classes.whitelist=org.apache.jmeter.save.ScriptWrapper" | sudo tee -a /usr/share/jmeter/bin/xstream.properties
+          
       - name: Run JMeter Test
         run: jmeter -n -t jmeter/trainstation_test.jmx -l jmeter/results.jtl
 
