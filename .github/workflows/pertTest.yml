@@ -2,10 +2,6 @@ name: API Performance Test
 
 on:
   workflow_dispatch:
-    inputs:
-      ref:
-        description: 'dev'
-        required: true
 
 jobs:
   jmeter-test:
