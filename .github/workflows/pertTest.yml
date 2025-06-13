@@ -6,12 +6,13 @@ on:
 jobs:
   jmeter-test:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout API Code
         uses: actions/checkout@v3
         with:
           repository: gogo-transit-repo/train-api
-          ref: ${{ github.event.inputs.ref }}
+          ref: dev
           fetch-depth: 0
           path: dev
 
@@ -19,6 +20,11 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y jmeter
+
+      - name: Patch JMeter XStream Security
+        run: |
+          echo "xstream.whitelist.append=true" | sudo tee /usr/share/jmeter/bin/xstream.properties
+          echo "xstream.classes.whitelist=org.apache.jmeter.save.ScriptWrapper" | sudo tee -a /usr/share/jmeter/bin/xstream.properties
 
       - name: Create JMeter Test Plan
         run: |
@@ -54,14 +60,6 @@ jobs:
             </hashTree>
           </jmeterTestPlan>
           EOF
-
-
-      - name: Patch XStream Permissions
-        run: |
-          mkdir -p $HOME/.jmeter
-          echo "xstream.whitelist.append=true" >> $HOME/.jmeter/xstream.properties
-          echo "xstream.classes.whitelist=org.apache.jmeter.save.ScriptWrapper" >> $HOME/.jmeter/xstream.properties
-          sudo cp $HOME/.jmeter/xstream.properties /usr/share/jmeter/bin/
 
       - name: Run JMeter Tests
         run: jmeter -n -t jmeter/trainstation_test.jmx -l jmeter/results.jtl
