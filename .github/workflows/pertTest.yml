@@ -15,8 +15,13 @@ jobs:
           ref: dev
           fetch-depth: 0
           path: dev
+          
+      - name: Setup Hosts
+        run: sudo echo "${HOST_ENTRY}" | sudo tee -a /etc/hosts
+        env:
+          HOST_ENTRY: ${{ secrets.HOST_ENTRY }}
 
-      - name: Install JMeter 5.5 Manually
+      - name: Install JMeter
         run: |
           sudo apt update
           sudo apt install -y openjdk-11-jdk wget
@@ -88,7 +93,6 @@ jobs:
           </jmeterTestPlan>
           EOF
 
-
       - name: Run JMeter Test
         run: |
           apache-jmeter-5.5/bin/jmeter \
@@ -97,8 +101,13 @@ jobs:
             -l jmeter/results.jtl \
             -Japi_key="${{ secrets.INTERNAL_KEY }}"
 
-      - name: Output JMeter Response Summary
-        run: cat jmeter/results.jtl
+      - name: Display JMeter Results
+        run: |
+          echo "==== JMeter Test Results ===="
+          head -n 1 jmeter/results.jtl | tr ',' '\t' > jmeter/formatted_results.txt
+          tail -n +2 jmeter/results.jtl | awk -F',' '{ printf "%s\t%s\t%s\t%s\t%s\t%s\n", $1, $2 "ms", $3, $4, $5, $14 }' >> jmeter/formatted_results.txt
+          column -t -s $'\t' jmeter/formatted_results.txt
+
 
       - name: Upload JMeter Results
         uses: actions/upload-artifact@v4
