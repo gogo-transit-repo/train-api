@@ -28,7 +28,7 @@ jobs:
         shell: bash
         run: |
           mkdir -p jmeter
-          cat <<EOF > jmeter/trainstation_test.jmx
+          cat > jmeter/trainstation_test.jmx <<'EOF'
           <?xml version="1.0" encoding="UTF-8"?>
           <jmeterTestPlan version="1.2" properties="5.0" jmeter="5.5">
             <hashTree>
@@ -72,7 +72,7 @@ jobs:
                       <collectionProp name="HeaderManager.headers">
                         <elementProp name="Internal-Key" elementType="Header">
                           <stringProp name="Header.name">Internal-Key</stringProp>
-                          <stringProp name="Header.value">\\${__P(api_key)}</stringProp>
+                          <stringProp name="Header.value">\${__P(api_key)}</stringProp>
                         </elementProp>
                         <elementProp name="accept" elementType="Header">
                           <stringProp name="Header.name">accept</stringProp>
@@ -87,6 +87,7 @@ jobs:
             </hashTree>
           </jmeterTestPlan>
           EOF
+
 
       - name: Run JMeter Test
         run: |
