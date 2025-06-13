@@ -1,21 +1,21 @@
 name: API Performance Test
 
 on:
-  workflow_run:
-    workflows: ["Dev Deployment"]
-    types:
-      - completed
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'dev'
+        required: true
 
 jobs:
   jmeter-test:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout API Code
         uses: actions/checkout@v3
         with:
           repository: gogo-transit-repo/train-api
-          ref: dev
+          ref: ${{ github.event.inputs.ref }}
           fetch-depth: 0
           path: dev
 
