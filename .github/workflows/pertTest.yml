@@ -179,9 +179,11 @@ jobs:
       - name: Display JMeter Results
         run: |
           echo "==== JMeter Test Results ===="
-          head -n 1 jmeter/results.jtl | tr ',' '\t' > jmeter/formatted_results.txt
-          tail -n +2 jmeter/results.jtl | awk -F',' '{ printf "%s\t%s\t%s\t%s\t%s\t%s\n", $1, $2 "ms", $3, $4, $5, $14 }' >> jmeter/formatted_results.txt
-          column -t -s $'\t' jmeter/formatted_results.txt
+          {
+            head -n 1 jmeter/results.jtl | tr ',' '\t'
+            tail -n +2 jmeter/results.jtl | awk -F',' '{ printf "%s\t%s\t%s\t%s\t%s\t%s\n", $1, $2 "ms", $3, $4, $5, $14 }'
+          } > jmeter/formatted_results.txt
+          column -t -s $'\t' jmeter/formatted_results.txt || cat jmeter/formatted_results.txt
 
       - name: Upload JMeter Results
         uses: actions/upload-artifact@v4
