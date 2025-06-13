@@ -56,7 +56,7 @@ jobs:
       - name: Login to Dev Environment
         shell: sh
         run: |
-          tools/apictl/apictl login dev -u ${{ secrets.DEV_USERNAME }} -p ${{ secrets.DEV_PASSWORD }} --insecure
+          tools/apictl/apictl login dev -u ${{ secrets.DEV_USERNAME }} -p ${{ secrets.DEV_PASSWORD }} --verbose --insecure 
           
       - name: Run Governance Validation
         run: |
