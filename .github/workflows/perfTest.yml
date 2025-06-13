@@ -1,20 +1,20 @@
 name: API Performance Test
+
 on:
-  pull_request_target:
-    branches:
-      - dev
+  workflow_run:
+    workflows: ["Dev Deployment"]
     types:
-      - closed
+      - completed
 
 jobs:
   jmeter-test:
-    if: github.event.pull_request.merged == true
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout API Code
         uses: actions/checkout@v3
         with:
-          repository: gogo-transit-repo/train-api
+          repository: gogo-transit/train-api
           ref: dev
           fetch-depth: 0
           path: dev
@@ -46,7 +46,7 @@ jobs:
                 <hashTree>
                   <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /stations" enabled="true">
                     <elementProp name="HTTPsampler.Arguments" elementType="Arguments"/>
-                    <stringProp name="HTTPSampler.domain">dev.apim.com</stringProp>
+                    <stringProp name="HTTPSampler.domain">dev-apim-host</stringProp>
                     <stringProp name="HTTPSampler.port">443</stringProp>
                     <stringProp name="HTTPSampler.protocol">https</stringProp>
                     <stringProp name="HTTPSampler.path">/trainstationapi/1.0.0/stations</stringProp>
@@ -59,14 +59,8 @@ jobs:
           </jmeterTestPlan>
           EOF
 
-      - name: Setup Hosts
-        run: sudo echo "${HOST_ENTRY}" | sudo tee -a /etc/hosts
-        env:
-          HOST_ENTRY: ${{ secrets.HOST_ENTRY }}
-
       - name: Run JMeter Tests
-        run: |
-          jmeter -n -t jmeter/trainstation_test.jmx -l jmeter/results.jtl
+        run: jmeter -n -t jmeter/trainstation_test.jmx -l jmeter/results.jtl
 
       - name: Upload JMeter Results
         uses: actions/upload-artifact@v3
