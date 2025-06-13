@@ -59,6 +59,11 @@ jobs:
           </jmeterTestPlan>
           EOF
 
+      - name: Setup Hosts
+        run: sudo echo "${HOST_ENTRY}" | sudo tee -a /etc/hosts
+        env:
+          HOST_ENTRY: ${{ secrets.HOST_ENTRY }}
+
       - name: Run JMeter Tests
         run: |
           jmeter -n -t jmeter/trainstation_test.jmx -l jmeter/results.jtl
