@@ -94,7 +94,7 @@ jobs:
                     <stringProp name="HTTPSampler.domain">gw.apim.com</stringProp>
                     <stringProp name="HTTPSampler.port">8243</stringProp>
                     <stringProp name="HTTPSampler.protocol">https</stringProp>
-                    <stringProp name="HTTPSampler.path">/trainstationapi/1.0.0/stations/\${station_id}</stringProp>
+                    <stringProp name="HTTPSampler.path">/trainstationapi/1.0.0/stations/${station_id}</stringProp>
                     <stringProp name="HTTPSampler.method">GET</stringProp>
                     <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                     <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -119,7 +119,7 @@ jobs:
                     <stringProp name="HTTPSampler.domain">gw.apim.com</stringProp>
                     <stringProp name="HTTPSampler.port">8243</stringProp>
                     <stringProp name="HTTPSampler.protocol">https</stringProp>
-                    <stringProp name="HTTPSampler.path">/trainstationapi/1.0.0/stations/\${station_id}/platforms</stringProp>
+                    <stringProp name="HTTPSampler.path">/trainstationapi/1.0.0/stations/${station_id}/platforms</stringProp>
                     <stringProp name="HTTPSampler.method">GET</stringProp>
                     <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                     <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -144,7 +144,7 @@ jobs:
                     <stringProp name="HTTPSampler.domain">gw.apim.com</stringProp>
                     <stringProp name="HTTPSampler.port">8243</stringProp>
                     <stringProp name="HTTPSampler.protocol">https</stringProp>
-                    <stringProp name="HTTPSampler.path">/trainstationapi/1.0.0/stations/\${station_id}/trains</stringProp>
+                    <stringProp name="HTTPSampler.path">/trainstationapi/1.0.0/stations/${station_id}/trains</stringProp>
                     <stringProp name="HTTPSampler.method">GET</stringProp>
                     <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                     <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -167,6 +167,7 @@ jobs:
             </hashTree>
           </jmeterTestPlan>
           EOF
+
 
       - name: Run JMeter Test
         run: |
