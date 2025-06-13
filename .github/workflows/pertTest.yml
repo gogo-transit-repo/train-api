@@ -147,7 +147,10 @@ jobs:
         run: |
           echo "==== JMeter Test Results ===="
           head -n 1 jmeter/results.jtl | tr ',' '\t' > jmeter/formatted_results.txt
-          tail -n +2 jmeter/results.jtl | awk -F',' '{ printf "%s\t%s\t%s\t%s\t%s\t%s\n", $1, $2 "ms", $3, $4, $5, $14 }' >> jmeter/formatted_results.txt
+          tail -n +2 jmeter/results.jtl | awk -F',' '{
+            printf "%s\t%sms\t%s\t%s\t%s\t%s\t%s\t%s\n", 
+                   $1, $2, $3, $4, $9, $7, $6, $14 
+          }' >> jmeter/formatted_results.txt
           column -t -s $'\t' jmeter/formatted_results.txt
 
       - name: Upload JMeter Results
