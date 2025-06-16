@@ -1,7 +1,7 @@
 type: api
 version: v4.3.0
 data:
-  name: TrainStationApi
+  name: TrainStationApi@GOGO
   description: API for retrieving information about train stations.
   context: /trainstationapi
   version: 1.0.0
